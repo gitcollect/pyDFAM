@@ -2,9 +2,9 @@
 
 class State(Object):
 
-    stateId = 0
+    stateId = -1
     
-    def __init__(self, stateId=-1):
+    def __init__(self, stateId):
         self.stateId = stateId
 
 
