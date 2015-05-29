@@ -1,12 +1,16 @@
 import sqlite3, transition
 DBFile = "BadUIDB"
 
-class DBHelper(object):
-    conn = sqlite3.connect(DBFile)
+conn = sqlite3.connect(DBFile)
 
-    def writeCOORD(x, y):
-        conn.execute('INSERT INTO SeqTable(x,y) VALUES(?, ?)', (x,y))
-        conn.commit()
+def writeCOORD(seq_id, x, y):
+    conn.execute('INSERT INTO COORDTable(seq_id ,x, y) VALUES(?, ?, ?)', (seq_id, x,y))
+    conn.commit()
 
-    def writeMethodCall(transition):
-        conn.execute('INSERT INTO SeqTable(timestamp, touch_class, touch_event) VALUES(?,?,?)', transition.getCursor())
+def getLastSeqId():
+    return conn.execute('SELECT MAX(seq_id) FROM SeqTable').fetchone()
+
+def writeMethodCall(transition):
+    conn.execute('INSERT INTO SeqTable(timestamp, touch_class, touch_event) VALUES(?,?,?)', transition.getCursor())
+    conn.commit()
+

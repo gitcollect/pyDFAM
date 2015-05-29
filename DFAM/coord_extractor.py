@@ -1,15 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os, sys, sqlite3, subprocess, signal
+import db
+import os, sys, signal
 
 fileName = "device_logs.txt"
-
-def writeBM(conn, x, y):
-
-    bm_cur = (x, y)
-    conn.execute('INSERT INTO SeqTable (x,y) VALUES (?,?)', (x,y))
-    conn.commit()
 
 def generateLog():
     return os.popen4("adb shell getevent -lt | grep event0 > " + fileName)
@@ -30,16 +25,25 @@ def main():
         def getCOORDvalue(line, idx):
             return int(line[idx+17:].replace(" ", ""), 16)
 
-        conn = sqlite3.connect(sys.argv[1])
         logs = open(fileName).read().splitlines()
+    
+        seq_id = 1
 
-        for idx, line in enumerate(logs):
-            idx_key = line.rfind("ABS_MT_POSITION_X")
+        for log in enumerate(logs, start = 1):
+            
+            frag = log[1]
+
+            idx_key = frag.rfind("ABS_MT_POSITION_X")
 
             if idx_key > -1:
-                x = getCOORDvalue(logs[idx], idx_key)
-                y = getCOORDvalue(logs[idx+1], idx_key)
-                writeBM(conn,x,y)
+                x = getCOORDvalue(frag, idx_key)
+                y = getCOORDvalue(logs[int(log[0])+1], idx_key)
+                db.writeCOORD(seq_id, x, y)
+            
+            isTouchEnd = frag.rfind("ABS_MT_TRACKING_ID")
+            
+            if isTouchEnd > -1:
+                seq_id += 1
 
     if len(sys.argv) < 1:
         print "Usage python log_parser.py logfile dbfile"
