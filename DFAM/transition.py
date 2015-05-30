@@ -1,8 +1,6 @@
 #! /usr/bin/env python
 
 class Transition(object):
-    x = 0
-    y = 0
     timestamp = -1
     touchEvent = ""
     methodName = ""
@@ -15,3 +13,7 @@ class Transition(object):
         self.timestamp = timestamp
         self.touchEvent = touchEvent
         self.methodName = methodName
+
+    def toStr(self):
+        print "timestamp : " + self.timestamp + " methodName : " + self.methodName + " touchEvent : " + self.touchEvent
+

@@ -32,16 +32,19 @@ def main():
         for log in enumerate(logs, start = 1):
             
             frag = log[1]
-
+            
             idx_key = frag.rfind("ABS_MT_POSITION_X")
 
             if idx_key > -1:
-                x = getCOORDvalue(frag, idx_key)
-                y = getCOORDvalue(logs[int(log[0])+1], idx_key)
-                db.writeCOORD(seq_id, x, y)
+                try:
+                    x = getCOORDvalue(frag, idx_key)
+                    y = getCOORDvalue(logs[int(log[0])], idx_key)
+                    db.writeCOORD(seq_id, x, y)
+                except ValueError:
+                    pass
             
             isTouchEnd = frag.rfind("ABS_MT_TRACKING_ID")
-            
+               
             if isTouchEnd > -1:
                 seq_id += 1
 

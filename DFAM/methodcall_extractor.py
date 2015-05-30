@@ -10,7 +10,7 @@ def pullLogFile():
 def parse(line):
     fragments = line.split("\t")
     timestamp = fragments[0]
-    methodName = fragments[3]
+    methodName = fragments[2].replace("class ", "")
     touchEvent = fragments[4]
 
     return transition.Transition(src=None, dst=None, timestamp=timestamp, methodName=methodName, touchEvent=touchEvent)
@@ -28,5 +28,7 @@ def getTransitions():
 
     return transtions
 
-def getCursor():
-    return (timestamp, methodName, touchEvent)
+
+for t in getTransitions():
+    print t.toStr()
+
