@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
-import subprocess, transition
+import subprocess, transition, db
+
 
 fileName = "mylog.txt"
 
@@ -28,7 +29,8 @@ def getTransitions():
 
     return transtions
 
+def writeMethodCall():
+    for transition in getTransitions():
+        db.writeMethodCall(transition)
 
-for t in getTransitions():
-    print t.toStr()
 
