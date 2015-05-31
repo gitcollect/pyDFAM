@@ -9,12 +9,13 @@ def pullLogFile():
     subprocess.Popen("adb pull /data/" + fileName, shell=True)   
 
 def parse(line):
+    
     fragments = line.split("\t")
     timestamp = fragments[0]
-    methodName = fragments[2].replace("class ", "")
+    className = fragments[2].replace("class ", "")
     touchEvent = fragments[4]
 
-    return transition.Transition(src=None, dst=None, timestamp=timestamp, methodName=methodName, touchEvent=touchEvent)
+    return transition.Transition(src=None, dst=None, timestamp=timestamp, className=className, touchEvent=touchEvent)
 
 def getTransitions():
     transtions = list()
