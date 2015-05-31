@@ -1,25 +1,27 @@
 #! /usr/bin/env python
 
-import subprocess, transition, db
+import os, transition, db
 
 
 fileName = "mylog.txt"
 
 def pullLogFile():
-    subprocess.Popen("adb pull /data/" + fileName, shell=True)   
+    os.popen4("adb pull /data/" + fileName)
 
 def parse(line):
     
-    fragments = line.split("\t")
-    timestamp = fragments[0]
-    className = fragments[2].replace("class ", "")
-    touchEvent = fragments[4]
+    try:
+        fragments = line.split("\t")
+        timestamp = fragments[0]
+        className = fragments[2].replace("class ", "")
+        touchEvent = fragments[4]
+        return transition.Transition(src=None, dst=None, timestamp=timestamp, className=className, touchEvent=touchEvent)
 
-    return transition.Transition(src=None, dst=None, timestamp=timestamp, className=className, touchEvent=touchEvent)
+    except IndexError:
+        pass
 
 def getTransitions():
     transtions = list()
-    pullLogFile()
     f = open("./" + fileName, "r")
     
     lines = f.readlines()
@@ -32,6 +34,7 @@ def getTransitions():
 
 def writeMethodCall():
     for transition in getTransitions():
-        db.writeMethodCall(transition)
+        if transition is not None:
+            db.writeMethodCall(transition)
 
 

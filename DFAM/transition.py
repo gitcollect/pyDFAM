@@ -14,6 +14,10 @@ class Transition(object):
         self.touchEvent = touchEvent
         self.className = className
 
+    def getCursor(self):
+        return (self.timestamp, self.className, self.touchEvent)
+
+
     def toStr(self):
         print "timestamp : " + self.timestamp + " className : " + self.className + " touchEvent : " + self.touchEvent
 

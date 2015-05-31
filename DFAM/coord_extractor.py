@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import db
-import os, sys, signal
+import os, sys
 
 fileName = "device_logs.txt"
 
@@ -16,8 +16,6 @@ def writeCOORD():
         
     def getCOORDvalue(line, idx):
         return int(line[idx+17:].replace(" ", ""), 16)
-
-    generateLog()
 
     logs = open(fileName).read().splitlines()
     
