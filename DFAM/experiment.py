@@ -1,5 +1,5 @@
 import coord_extractor, methodcall_extractor
-import signal,sys, time
+import signal, sys, time, os
 
 def main():
 
@@ -12,7 +12,9 @@ def main():
 
         methodcall_extractor.writeMethodCall()
         coord_extractor.writeCOORD()
-        
+    
+        os.popen("rm *.txt")
+
         sys.exit(1)
     
     coord_extractor.generateLog()
