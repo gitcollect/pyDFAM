@@ -11,6 +11,6 @@ def getLastSeqId():
     return conn.execute('SELECT MAX(seq_id) FROM SeqTable').fetchone()
 
 def writeMethodCall(transition):
-    conn.execute('INSERT INTO SeqTable(timestamp, touch_class, touch_event) VALUES(?,?,?)', transition.getCursor())
+    conn.execute('INSERT INTO SeqTable(time_stamp, touch_class, touch_event) VALUES(?,?,?)', transition.getCursor())
     conn.commit()
 
