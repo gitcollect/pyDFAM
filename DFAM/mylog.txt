@@ -1,9 +1,0 @@
----------- file open mylog
-1431219942155	com.android.launcher2.Launcher	class com.android.launcher2.BubbleTextView	0	performClick
-1431219948591	com.android.launcher2.Launcher	class com.android.launcher2.PagedViewIcon	9	performClick
-1431219950188	com.kpbird.globaltouchevent.MainActivity	class android.widget.Button	2131230720	performClick
-1431219955324	com.android.launcher2.Launcher	class com.android.launcher2.PagedViewIcon	15	performClick
-1431219963563	com.android.launcher2.Launcher	class com.android.launcher2.BubbleTextView	0	performClick
-1431219965622	com.android.launcher2.Launcher	class com.android.launcher2.PagedViewIcon	12	performClick
-1431219967164	com.example.mylogapp.MainActivity	class android.widget.Button	2131099649	performClick
----------- file close 20150510
