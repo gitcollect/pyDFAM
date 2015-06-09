@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import db
-import os, sys
+import db, os
 
 fileName = "device_logs.txt"
 
