@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import state_recorder
 
 import db, os
 
@@ -38,4 +39,3 @@ def writeCOORD():
                
         if isTouchEnd > -1:
             seq_id += 1
-

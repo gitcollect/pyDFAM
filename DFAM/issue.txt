@@ -1,0 +1,188 @@
+url : https://github.com/mozilla/MozStumbler/pull/1675
+body : This should fix #1645 
+
+
+url : https://github.com/RichardLckx/IN4254_SmartPhoneSensing/pull/1
+body : Change layout used to make it easier to adjust it in the future. Also
+make strings used more in line with android usage.
+
+url : https://github.com/droolsjbpm/drools/pull/416
+body : -drools-android module added
+-dex classloaders for generated classes
+-maven plugin for pre-serializing knowledge packages during buildtime
+-roboguice extension for injecting kiebases from pre serialized packages
+-Kie classpath container works.  loads compilation cache from maven build
+-added drools-android-examples. one with preserialized kbases and one with classpath container
+
+At this point the only advantage of using the preserialized kbases is that it requires lot less dependencies.  With the drools-compiler dependency I needed to use multidex to package all the classes.  Which some users might not want.. to limit the size of the apk.
+
+-This change also depends on a change to the maven-android-plugin, to which I have already submitted a pull request.  
+-Finally android 5.0 support depends on a change to mvel2, namely it's handling of the java.version system property, which cannot be overridden in android 5.0.  I am also submitting a pull request for that.
+
+Looking forward to feedback!
+
+url : https://github.com/syncthing/syncthing-android/pull/284
+body : Probably fixes (Play store logs)
+```
+java.lang.RuntimeException: Unable to start service com.nutomic.syncthingandroid.syncthing.SyncthingService@140f4d5c with Intent { act=restart cmp=com.nutomic.syncthingandroid/.syncthing.SyncthingService }: android.view.WindowManager$BadTokenException: Unable to add window -- token android.os.BinderProxy@b108aa9 is not valid; is your activity running?
+at android.app.ActivityThread.handleServiceArgs(ActivityThread.java:2881)
+at android.app.ActivityThread.access$2100(ActivityThread.java:144)
+at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1376)
+at android.os.Handler.dispatchMessage(Handler.java:102)
+at android.os.Looper.loop(Looper.java:135)
+at android.app.ActivityThread.main(ActivityThread.java:5221)
+at java.lang.reflect.Method.invoke(Native Method)
+at java.lang.reflect.Method.invoke(Method.java:372)
+at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:899)
+at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:694)
+Caused by: android.view.WindowManager$BadTokenException: Unable to add window -- token android.os.BinderProxy@b108aa9 is not valid; is your activity running?
+at android.view.ViewRootImpl.setView(ViewRootImpl.java:562)
+at android.view.WindowManagerGlobal.addView(WindowManagerGlobal.java:272)
+at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:69)
+at android.app.Dialog.show(Dialog.java:298)
+at android.app.AlertDialog$Builder.show(AlertDialog.java:987)
+at com.nutomic.syncthingandroid.activities.MainActivity.onApiChange(MainActivity.java:72)
+at com.nutomic.syncthingandroid.syncthing.SyncthingService.onApiChange(SyncthingService.java:397)
+at com.nutomic.syncthingandroid.syncthing.SyncthingService.updateState(SyncthingService.java:227)
+at com.nutomic.syncthingandroid.syncthing.SyncthingService.onStartCommand(SyncthingService.java:148)
+at android.app.ActivityThread.handleServiceArgs(ActivityThread.java:2864)
+... 9 more
+```
+
+url : https://github.com/bhuman/GameController/pull/19
+body : Implements Converter to get default all Colors based on the InternalColor.
+For Awt#Color use coloring/AwtColorConverter else Implements own Converter with coloring/ColorConverter.
+
+url : https://github.com/rgladwell/m2e-android/pull/364
+body : During classpath configuration the order of source code folders changes
+causing problems with source code lookup, for example during debugging:
+
+https://github.com/rgladwell/m2e-android/issues/issue/245
+
+The order should always be:
+
+src/main/java
+src/main/resources
+src/test/java
+src/test/resources
+Android Framework
+Android Private Libraries
+Android Dependencies
+Maven Dependencies
+Non-runtime Maven Dependencies
+
+This change reorders the classpath as above. Includes tests.
+
+url : https://github.com/Team-Chimera/GPS-Tracker/pull/7
+body : in place, just needs some functionality for getting location and sending to server.
+
+Signed-off-by: jbayntun <j_bayntun@hotmail.com>
+
+url : https://github.com/syncthing/syncthing-android/pull/381
+body : The code updates all the REST endpoints, and the "connections" change.
+
+It also fixes an issue where the Web GUI button would always result in a `Request denied` message due to no HTTP authentication being attempted.
+
+url : https://github.com/antlr/antlr4/pull/737
+body : Hey guys,
+I am actively using antlr4 runtime for parsing on android, and found that android will error out when parsing errors occur:
+
+	10-01 18:51:15.021: W/dalvikvm(25921): Unable to resolve superclass of Lorg/antlr/v4/runtime/tree/gui/TreeViewer; (2606)
+	10-01 18:51:15.021: W/dalvikvm(25921): Link of class 'Lorg/antlr/v4/runtime/tree/gui/TreeViewer;' failed
+	10-01 18:51:15.021: E/dalvikvm(25921): Could not find class 'org.antlr.v4.runtime.tree.gui.TreeViewer', referenced from method org.antlr.v4.runtime.RuleContext.inspect
+	10-01 18:51:15.021: W/dalvikvm(25921): VFY: unable to resolve new-instance 3037 (Lorg/antlr/v4/runtime/tree/gui/TreeViewer;) in Lorg/antlr/v4/runtime/RuleContext;
+	10-01 18:51:15.021: D/dalvikvm(25921): VFY: replacing opcode 0x22 at 0x0000
+	10-01 18:51:15.021: W/dalvikvm(25921): Unable to resolve superclass of Lorg/antlr/v4/runtime/tree/gui/TreeViewer; (2606)
+	10-01 18:51:15.021: W/dalvikvm(25921): Link of class 'Lorg/antlr/v4/runtime/tree/gui/TreeViewer;' failed
+	10-01 18:51:15.021: D/dalvikvm(25921): DexOpt: unable to opt direct call 0x55c4 at 0x02 in Lorg/antlr/v4/runtime/RuleContext;.inspect
+
+So I created a fork, and branched the 4.0 version for android, removing references to javax.swing and java.awt which aren't available on android.
+
+This will fix the following issues mentioned on stack overflow:
+http://stackoverflow.com/questions/16745406/antlr4-in-android-is-not-giving-expected-output
+
+
+url : https://github.com/WhisperSystems/TextSecure/pull/3299
+body : Hi `TextSecure` developers, I'm doing research on Android async programming, particularly on 
+AsyncTask and IntentService. AsyncTask can lead to memory leak and losing task result when GUI is recreated during task running (such as orientation change). [This article](http://bon-app-etit.blogspot.com/2013/04/the-dark-side-of-asynctask.html) describes the problems very well. 
+
+We discussed with some Android experts and they agree with this issue, and claim that AsyncTask can be considered only for short tasks (less than 1 second). However, using IntentService (or AsyncTaskLoader) can avoid such problems since their lifecycles are independent from `Activity`/`Fragment`.
+
+In `TextSecure`, the AsyncTasks are declared as non-static inner classes of `Activity`/`Fragment`. So the above issue can occur (especially for relatively long tasks).
+
+I refactored 9 AsyncTasks in `TextSecure` to IntentService (in 8 separate commits), with the help of a refactoring tool we developed. Do you think using IntentService should be better in some of these 9  scenario? Do you want to merge some commits in this pr? Thanks.
+
+url : https://github.com/cymcsg/UltimateAndroid/pull/10
+body : Hi `UltimateAndroid` developers, I'm doing research on Android async programming, particularly on 
+AsyncTask and IntentService. AsyncTask can lead to memory leak and losing task result when GUI is recreated during task running (such as orientation change). [This article](http://bon-app-etit.blogspot.com/2013/04/the-dark-side-of-asynctask.html) describes the problems very well. 
+
+We discussed with some Android experts and they agree with this issue, and claim that AsyncTask can be considered only for short tasks (less than 1 second). However, using IntentService (or AsyncTaskLoader) can avoid such problems since their lifecycles are independent from `Activity`/`Fragment`.
+
+In `UltimateAndroid`, the AsyncTasks are declared as non-static inner classes of `Activity`/`Fragment`. So the above issue can occur (especially for relatively long tasks).
+
+I refactored 6 AsyncTasks in `UltimateAndroid` to IntentService (in 6 separate commits), with the help of a refactoring tool we developed. Do you think using IntentService should be better in some of these 6  scenario? Do you want to merge some commits in this pr? Thanks.
+
+url : https://github.com/syncthing/syncthing-android/pull/283
+body : Towards https://github.com/syncthing/syncthing-android/issues/216 ?
+
+url : https://github.com/deltagruppen/circles/pull/4
+body : I created a "Hello World" app in Android studio that we hopefully should be able to base the project on. Can someone test that this works on their machine (so that all the necessary files have been committed)?
+
+url : https://github.com/ukanth/afwall/pull/330
+body : Currently only six of the special Android accounts are supported:  root, adb, media, vpn, gps, and shell.  This series adds support for all of the (current) special Android accounts (as listed in [the Android source code](https://android.googlesource.com/platform/system/core.git/+/master/include/private/android_filesystem_config.h)), and does some code cleanup.
+
+url : https://github.com/MobileApps-BJTU/tip-calculator/pull/20
+body : 12304103-ali
+
+url : https://github.com/CyanogenMod/android_packages_providers_MediaProvider/pull/1
+body : Backported from e664904f896028762ab3126d0107b21dc8a475a4 in cm-11.
+
+url : https://github.com/syncthing/syncthing-android/pull/313
+body : - I did a check on all fragments for use-while-finishing usage patterns
+- If it is finishing and we need to restart, we just restart.
+
+url : https://github.com/bitfireAT/davdroid/pull/194
+body : This patch integrates MemorizingTrustManager as suggested in https://github.com/rfc2822/davdroid/issues/3
+
+MemorizingTrustManager is included as a git submodule (so updates should be automatically included when pulling). 
+
+The patch has been modified to fit the new singleton pattern for TlsSniSocketFactory. The new version changes TlsSniSocketFactory and all the activities/services that may eventually use the TlsSniSocketFactory
+
+This isn't extensively tested, but it works on my phone with a self-signed certificate that does not have the CA extension set (importing this type of certificate into the android trust store did not help, as it is considered a "client" certificate). I tested on Cyanogenmod 11 M4.
+
+
+
+
+url : https://github.com/hawkular/hawkular-alerts/pull/36
+body : Create an Aerogear sender plugin
+
+url : https://github.com/caarmen/network-monitor/pull/58
+body : While using the application I noticed if I wanted to have decent accuracy while running speed test my data usage got huge. Just setting the interval to very slow is not an option since I also want to keep track of the signal strength. 
+
+The download and upload speed does not change as much as the signal strength. So to enable high accuracy on the speed test I just made it so that the test is not run on every tick, there are different levels of how often one want to run the speed test.
+
+The implementation for the network change and dbm change options are probably not the most accurate since I only check these when the application requests a speed test and not when the changes occurs.
+
+url : https://github.com/void256/nifty-gui/pull/277
+body : The Java2D renderer is some of the most outdated, nasty code in the
+whole library. I don't think anyone uses it any more.
+
+url : https://github.com/sleuthkit/autopsy/pull/905
+body : This utilizes the proposed tskReadStatus blackboard attribute in Sleuthkit and is used to hold the read status of a SMS message (ie. "read", "unread").
+
+
+url : https://github.com/syncthing/syncthing-android/pull/339
+body : 
+
+url : https://github.com/jonasoreland/runnerup/pull/76
+body : Issue #74: move android:text texts into res/values/ and rename IDs in XML to underscore case
+
+url : https://github.com/wtud/tsap/pull/137
+body : Applied changes of #124 again (were reverted, see #135)
+
+url : https://github.com/wtud/tsap/pull/135
+body : Reverts wtud/tsap#124 as it introduces Lint warnings that have already been fixed and because it hasn't been tested by Jenkins properly
+
+url : https://github.com/wtud/tsap/pull/124
+body : The search UI does not show any progress anymore (the spinning progress wheel), plus the test stays in the background when any results come in.
+

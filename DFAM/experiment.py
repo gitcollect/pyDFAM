@@ -9,14 +9,11 @@ def main():
     elapsedTime = 0
 
     def signal_handler(signal, frame):
-        
+          
         def cleanUp():
-
             lastUsrId = db.getLastUserId()[0]
-
             if lastUsrId is None:
                 lastUsrId = 1
-
             lastUsrId += 1
 
             endTime = datetime.now()
@@ -28,9 +25,14 @@ def main():
         methodcall_extractor.pullLogFile()
         coord_extractor.pullLogFile()
 
-        time.sleep(10)
-
-        methodcall_extractor.writeMethodCall()
+        time.sleep(7)
+        
+        lastUsrId = db.getLastUserId()[0]
+        
+        if lastUsrId is None:
+            lastUsrId = 1
+        
+        methodcall_extractor.writeMethodCall(lastUsrId)
         coord_extractor.writeCOORD()
         
         cleanUp()

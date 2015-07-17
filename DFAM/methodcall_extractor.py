@@ -2,7 +2,6 @@
 
 import os, transition, db
 
-
 fileName = "mylog.txt"
 
 def pullLogFile():
@@ -13,9 +12,12 @@ def parse(line):
     try:
         fragments = line.split("\t")
         timestamp = fragments[0]
+        screen = fragments[1]
         className = fragments[2].replace("class ", "")
+        objectId = fragments[3]
         touchEvent = fragments[4]
-        return transition.Transition(src=None, dst=None, timestamp=timestamp, className=className, touchEvent=touchEvent)
+
+        return transition.Transition(src=None, dst=None, timestamp=timestamp, className=className, touchEvent=touchEvent, screen=screen, objectId=objectId)
 
     except IndexError:
         pass
@@ -32,9 +34,10 @@ def getTransitions():
 
     return transtions
 
-def writeMethodCall():
+
+def writeMethodCall(usr_id):
     for transition in getTransitions():
         if transition is not None:
             db.writeMethodCall(transition)
-
-
+            seq_id = db.getLastSeqId()[0]
+            db.writeBM(usr_id, seq_id)
