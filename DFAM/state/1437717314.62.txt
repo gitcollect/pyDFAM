@@ -1,0 +1,4 @@
+android.widget.FrameLayout  
+   android.widget.ImageView  
+   android.widget.EditText com.example.shhapp:id/username test
+   android.widget.Button com.example.shhapp:id/Button01 OK
