@@ -3,7 +3,7 @@
 __author__ = 'kyeongwookma'
 import json, urllib
 
-search_keyword = ["android gui", "android ui", "android usability"]
+search_keyword = ["android design", "android gui", "android ui", "android usability"]
 
 base_url = "https://api.github.com/search/issues"
 query = "?q="
@@ -25,8 +25,9 @@ for keyword in search_keyword:
 
             for issue in issues:
                 url = issue["html_url"]
-                if "pull" in url:
-                    print "url : " + url + "\n" + "body : " + issue["body"] + "\n"
+                body = issue["body"]
+                if url is not None and body is not None:
+                    print "url : " + url.encode("utf-8") + "\n" + "body : " + body.encode("utf-8") + "\n"
 
         except KeyError, KeyboardInterrupt:
             pass
