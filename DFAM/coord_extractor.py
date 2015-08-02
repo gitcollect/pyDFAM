@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import db, os
+import db, os, subprocess
 
-fileName = "device_logs.txt"
 
 def generateLog():
-    return os.popen4("adb shell getevent -lt | grep event0 > " + fileName)
+    stdin, stdout, stderr = os.popen4("adb shell getevent -lt | grep event0 > " + fileName)
+    return stdout, stderr
 
 def pullLogFile():
     return os.popen4("adb pull /data/"+fileName)
@@ -15,12 +15,10 @@ def writeCOORD():
         
     def getCOORDvalue(line, idx):
         return int(line[idx+17:].replace(" ", ""), 16)
-
-    logs = open(fileName).read().splitlines()
     
     seq_id = 1
 
-    for log in enumerate(logs, start = 1):
+    for log in generateLog().readlines():
             
         frag = log[1]
             
@@ -35,6 +33,9 @@ def writeCOORD():
                 pass
             
         isTouchEnd = frag.rfind("ABS_MT_TRACKING_ID")
-               
+            
+        # touch ended
         if isTouchEnd > -1:
+            screenshotCmd = "monkeyrunner " + os.getcwd() + "screenshot.py"
+            subprocess.Popen(screenshotCmd)
             seq_id += 1
