@@ -21,7 +21,6 @@ def writeCOORD():
     for log in generateLog():
             
         frag = log.rstrip()
-        print frag       
         idx_key = frag.rfind("ABS_MT_POSITION_X")
 
         x = 0
@@ -45,7 +44,6 @@ def writeCOORD():
             except ValueError:
                 pass
         
-        
         if tmp_x != 0 and tmp_y != 0:
             print "writed ", tmp_x, tmp_y
             DB.writeCOORD(seq_id, tmp_x, tmp_y)
@@ -54,6 +52,6 @@ def writeCOORD():
             
         # touch ended
         if isTouchEnd > -1:
-            #screenshotCmd = "monkeyrunner " + os.getcwd() + "screenshot.py"
-            #subprocess.Popen(screenshotCmd)
+            screenshotCmd = "monkeyrunner " + os.getcwd() +  "/screenshot.py 23 234"
+            os.popen4(screenshotCmd)
             seq_id += 1
