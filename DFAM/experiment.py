@@ -1,5 +1,5 @@
 import coord_extractor, methodcall_extractor
-import signal, sys, time, os, db
+import signal, sys, time, os, DB
 from datetime import datetime
 
 def main():
@@ -11,36 +11,30 @@ def main():
     def signal_handler(signal, frame):
           
         def cleanUp():
-            lastUsrId = db.getLastUserId()[0]
+            lastUsrId = DB.getLastUserId()[0]
             if lastUsrId is None:
-                lastUsrId = 1
+                lastUsrId = 0
             lastUsrId += 1
 
             endTime = datetime.now()
             elapsedTime = str(endTime - startTime)
-            db.writeUserInfo(lastUsrId, elapsedTime)
+            DB.writeUserInfo(lastUsrId, elapsedTime)
             os.popen("rm *.txt")
             sys.exit(1)
-
+        
         methodcall_extractor.pullLogFile()
-        coord_extractor.pullLogFile()
 
         time.sleep(7)
         
-        lastUsrId = db.getLastUserId()[0]
-        
-        if lastUsrId is None:
-            lastUsrId = 1
-        
+        lastUsrId = DB.getLastUserId()[0]
         methodcall_extractor.writeMethodCall(lastUsrId)
-        coord_extractor.writeCOORD()
         
         cleanUp()
 
 
     startTime = datetime.now()
-
-    coord_extractor.generateLog()
+    
+    coord_extractor.writeCOORD()
 
     signal.signal(signal.SIGINT, signal_handler)
     

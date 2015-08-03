@@ -1,11 +1,11 @@
 #! /usr/bin/env python
 
-import os, transition, db
+import os, transition, DB
 
 fileName = "mylog.txt"
 
 def pullLogFile():
-    os.popen4("adb pull /data/" + fileName)
+    os.popen4("aDB pull /data/" + fileName)
 
 def parse(line):
     
@@ -38,6 +38,6 @@ def getTransitions():
 def writeMethodCall(usr_id):
     for transition in getTransitions():
         if transition is not None:
-            db.writeMethodCall(transition)
-            seq_id = db.getLastSeqId()[0]
-            db.writeBM(usr_id, seq_id)
+            DB.writeMethodCall(transition)
+            seq_id = DB.getLastSeqId()[0]
+            DB.writeBM(usr_id, seq_id)

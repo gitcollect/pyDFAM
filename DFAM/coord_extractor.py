@@ -1,41 +1,59 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import db, os, subprocess
-
+import DB, os, subprocess
 
 def generateLog():
-    stdin, stdout, stderr = os.popen4("adb shell getevent -lt | grep event0 > " + fileName)
-    return stdout, stderr
-
-def pullLogFile():
-    return os.popen4("adb pull /data/"+fileName)
+    cmd = "adb shell getevent -lt | grep event0"
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    return p.stdout
 
 def writeCOORD():
-        
+
     def getCOORDvalue(line, idx):
         return int(line[idx+17:].replace(" ", ""), 16)
     
     seq_id = 1
 
-    for log in generateLog().readlines():
+    tmp_x = 0
+    tmp_y = 0
+
+    for log in generateLog():
             
-        frag = log[1]
-            
+        frag = log.rstrip()
+        print frag       
         idx_key = frag.rfind("ABS_MT_POSITION_X")
+
+        x = 0
+        y = 0
 
         if idx_key > -1:
             try:
                 x = getCOORDvalue(frag, idx_key)
-                y = getCOORDvalue(logs[int(log[0])], idx_key)
-                db.writeCOORD(seq_id, x, y)
+                if x != 0:
+                    tmp_x = x
             except ValueError:
                 pass
-            
-        isTouchEnd = frag.rfind("ABS_MT_TRACKING_ID")
+        
+        idx_key = frag.rfind("ABS_MT_POSITION_Y")
+        
+        if idx_key > -1:
+            try:
+                y = getCOORDvalue(frag, idx_key)
+                if y != 0:
+                    tmp_y = y
+            except ValueError:
+                pass
+        
+        
+        if tmp_x != 0 and tmp_y != 0:
+            print "writed ", tmp_x, tmp_y
+            DB.writeCOORD(seq_id, tmp_x, tmp_y)
+
+        isTouchEnd = frag.rfind("ABS_MT_PRESSURE")
             
         # touch ended
         if isTouchEnd > -1:
-            screenshotCmd = "monkeyrunner " + os.getcwd() + "screenshot.py"
-            subprocess.Popen(screenshotCmd)
+            #screenshotCmd = "monkeyrunner " + os.getcwd() + "screenshot.py"
+            #subprocess.Popen(screenshotCmd)
             seq_id += 1
