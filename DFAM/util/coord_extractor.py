@@ -3,6 +3,8 @@
 
 import DB, os, subprocess
 
+lastUsrId = str(DB.getLastUserId()[0])
+
 def generateLog():
     cmd = "adb shell getevent -lt | grep event0"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
@@ -45,13 +47,15 @@ def writeCOORD():
                 pass
         
         if tmp_x != 0 and tmp_y != 0:
-            print "writed ", tmp_x, tmp_y
             DB.writeCOORD(seq_id, tmp_x, tmp_y)
 
         isTouchEnd = frag.rfind("ABS_MT_PRESSURE")
-            
+        
+        timestamp = frag[frag.find("[")+1:frag.find("]")].replace(" ", "")
+
         # touch ended
         if isTouchEnd > -1:
-            screenshotCmd = "monkeyrunner " + os.getcwd() +  "/screenshot.py 23 234"
-            os.popen4(screenshotCmd)
+            screenshotCmd = "monkeyrunner " + os.getcwd() + "/util/screenshot.py " + lastUsrId + " " + str(timestamp)
+            print screenshotCmd
+            subprocess.Popen(screenshotCmd, shell=True)
             seq_id += 1

@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import os, transition, DB
+import os, model.transition, DB
 
 fileName = "mylog.txt"
 
